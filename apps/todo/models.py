@@ -1,5 +1,6 @@
-from django.contrib.auth.models import User
 from django.db.models import Model, CharField, TextField, BooleanField, DateTimeField, ForeignKey, CASCADE
+
+from users.models import User
 
 
 class ToDoWoo(Model):
