@@ -1,6 +1,6 @@
-
 from django.db import transaction
 from rest_framework.decorators import action
+from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 from rest_framework_simplejwt.settings import api_settings
 from rest_framework_simplejwt.views import TokenViewBase
@@ -33,17 +33,16 @@ class UserViewSet(GenericViewSet):
     queryset = User.objects.all()
     serializer_class = UserModelSerializer
 
-    # @action(['post'], False, serializer_class=RegisterSerializer)
-    # def register(self, request):
-    #     """
-    #     ro'yxatdan o'tish
-    #
-    #     ```
-    #     """
-    #     try:
-    #         with transaction.atomic():
-    #             serializer = self.serializer_class(data=request.data)
-    #             serializer.is_valid(raise_exception=True)
-    #             username = serializer.data.get('username')
-    #             password = serializer.data.get('password')
-    #             User.objects.create()
+    @action(['post'], False, serializer_class=RegisterSerializer)
+    def register(self, request):
+        """
+        ro'yxatdan o'tish
+
+        ```
+        """
+        with transaction.atomic():
+            serializer = self.serializer_class(data=request.data)
+            serializer.is_valid(raise_exception=True)
+            user = User.objects.create_user(serializer.data['username'], password=serializer.data['password'])
+            serializer = UserModelSerializer(user)
+        return Response(serializer.data, 201)
