@@ -1,5 +1,5 @@
 from rest_framework.fields import CurrentUserDefault, HiddenField
-from rest_framework.serializers import ModelSerializer
+from rest_framework.serializers import ModelSerializer, Serializer
 
 from todo.models import ToDoWoo
 
@@ -16,3 +16,7 @@ class TodoSerializer(ModelSerializer):
     class Meta:
         model = ToDoWoo
         fields = ('id', 'title', 'description', 'is_important', 'is_complete', 'completed_at')
+
+
+class NoneSerializer(Serializer):
+    pass

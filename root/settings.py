@@ -3,6 +3,7 @@ import sys
 from datetime import timedelta
 from pathlib import Path
 
+from corsheaders.defaults import default_headers
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -22,6 +23,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'corsheaders',
     # third party apps
     'drf_yasg',
     'rest_framework',
@@ -35,6 +37,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -83,6 +86,27 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+CORS_ORIGIN_ALLOW_ALL = True
+
+CORS_ALLOW_METHODS = [
+    "GET",
+    "DELETE",
+    "OPTIONS",
+    "PATCH",
+    "POST",
+    "PUT",
+]
+CORS_ALLOW_ALL_ORIGINS = True
+
+CORS_ALLOW_HEADERS = default_headers + (
+    'cache-control',
+    'Content-Type',
+    'Authorization',
+    'Language',
+    'Referer',
+    'x-requested-with',
+    'origin',
+)
 
 LANGUAGE_CODE = 'en-us'
 
@@ -104,7 +128,6 @@ REST_FRAMEWORK = {
     ),
     'DATETIME_FORMAT': '%b %d %Y %H:%M',
 }
-
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=7),

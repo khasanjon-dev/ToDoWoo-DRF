@@ -4,12 +4,12 @@ from django.db import transaction
 from rest_framework.decorators import action
 from rest_framework.generics import get_object_or_404
 from rest_framework.mixins import CreateModelMixin
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
 from todo.models import ToDoWoo
-from todo.serializers import TodoWooModelSerializer, TodoSerializer
+from todo.serializers import TodoWooModelSerializer, TodoSerializer, NoneSerializer
 
 
 class TodoViewSet(CreateModelMixin, GenericViewSet):
@@ -54,3 +54,8 @@ class TodoViewSet(CreateModelMixin, GenericViewSet):
         except Exception:
             context = {'message': "Allaqachon o'chirilgan yoki sizga tegishli emas !"}
             return Response(context, 400)
+
+    @action(['post'], False, url_path='end-point', serializer_class=NoneSerializer, permission_classes=[AllowAny])
+    def end_point(self, request):
+        print(request.data, 'end point request data')
+        return Response('Success', 200)
